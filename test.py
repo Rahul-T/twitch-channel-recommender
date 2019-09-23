@@ -1,6 +1,7 @@
 import socket
 import logging
 import os
+import pandas as pd
 
 server = 'irc.chat.twitch.tv'
 port = 6667
@@ -15,6 +16,9 @@ sock.send(f"PASS {token}\n".encode('utf-8'))
 sock.send(f"NICK {nickname}\n".encode('utf-8'))
 sock.send(f"JOIN {channel}\n".encode('utf-8'))
 
-for x in range(100):
-    resp = sock.recv(2048).decode('utf-8')
-    print(resp)
+unpickled = pd.read_pickle('ICWSM19_data/ninja.pkl')
+print(unpickled['body'])
+
+# for x in range(100):
+#     resp = sock.recv(2048).decode('utf-8')
+#     print(resp)
