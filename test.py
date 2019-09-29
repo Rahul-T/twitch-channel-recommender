@@ -13,32 +13,21 @@ channel = '#shroud'
 sock = socket.socket()
 sock.connect((server, port))
 
-sock.send(f"PASS {token}\n".encode('utf-8'))
-sock.send(f"NICK {nickname}\n".encode('utf-8'))
-sock.send(f"JOIN {channel}\n".encode('utf-8'))
+sock.send("PASS {}\n".format(token).encode('utf-8'))
+sock.send("NICK {}\n".format(nickname).encode('utf-8'))
+sock.send("JOIN {}\n".format(channel).encode('utf-8'))
 
 unpickled = pd.read_pickle('ICWSM19_data/ninja.pkl')
 frags = unpickled['fragments']
 
 for items in frags.iteritems():
-    # print(items[1])
     data = pd.DataFrame(items[1])
-    # print(items[1])
-    # data = [json.loads(i) for i in data if i]    #Iterate your list check if you have data then use json.loads
-    # print("\nnewframe")
+
     if('emoticon_id' in data and 'text' in data):
-        # print(data[data.emoticon_id.notnull()])
-        data2 = data[data['text'] != ' ']
-        data3 = data2[data['text'].notnull()]
-        if not data3.empty:
+        validText = data[(data['text'] != ' ') & data['text'].notnull()]
+        validEmote = data[data.emoticon_id.notnull()]
+        if not (validText.empty or validEmote.empty):
             print(items[1])
-            print(data3)
-
-
-# print(type(frags))
-# js = [json.loads(i) for i in frags if i]
-
-
 
 # for x in range(100):
 #     resp = sock.recv(2048).decode('utf-8')
