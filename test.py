@@ -19,7 +19,7 @@ server = 'irc.chat.twitch.tv'
 port = 6667
 nickname = os.environ['TWITCH_USERNAME']
 token = os.environ['OAUTH']
-channel = '#twitch'
+channel = '#shroud'
 
 sock = socket.socket()
 sock.connect((server, port))
@@ -52,7 +52,7 @@ def removeNoise(text):
                 new_word = p.number_to_words(new_word)
             new_words.append(new_word)
     new_words = lemmatize_verbs(new_words)
-    print(new_words)
+    # print(new_words)
     return new_words
 
 def readData():
@@ -73,11 +73,16 @@ def readData():
                 for row in validEmote.head().itertuples():
                     print(row[1])
 
-def getLiveData():
+def getLiveData(ed):
     for x in range(100):
         resp = sock.recv(2048).decode('utf-8')
-        # msg = resp.split(':')
-        # print(msg)
+        message = re.search(':(.*)', resp[1:])
+        if not message is None:
+            msg = message.group(0)[1:-1].split(' ')
+            print(msg)
+            for word in msg:
+                if word in ed:
+                    print(ed[word])
 
 def getEmotes():
     emoteDict = {}
@@ -89,5 +94,6 @@ def getEmotes():
     return emoteDict
 
 # readData()
-# getEmotes()
-# getLiveData()
+ed = getEmotes()
+# print(ed.get('monkaW'))
+getLiveData(ed)
