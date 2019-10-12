@@ -1,0 +1,4 @@
+env.sh
+ICWSM19_data/
+*.pyc
+twitter_emotion_recognition/
