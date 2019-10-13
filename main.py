@@ -30,7 +30,7 @@ def getLiveData(ed):
                     print(ed[word])
 
 
-readData()
+emoteCluster()
 # emotesToIds, idsToEmotes = buildEmoteDicts()
 # print(emotesToIds.get('Kappa'))
 # print(idsToEmotes.get(1))

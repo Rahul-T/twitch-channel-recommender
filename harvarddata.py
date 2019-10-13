@@ -5,24 +5,14 @@ import datetime
 import twitter_emotion_recognition.emotion_predictor as twitter
 from collections import Counter 
 import os
+import pickle
 
-# model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
-
-emoteToWordCount = {}
-emoteToEmotionCount = {}
-
-def readData():
-    # for filename in os.listdir('ICWSM19_data'):
-    #     print(filename)
-
-    then = datetime.datetime.now()
-    unpickled = pd.read_pickle('ICWSM19_data/ninja.pkl')
-    frags = unpickled['fragments']
+def clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount):
     limit = 0
 
     for items in frags.iteritems():
         data = pd.DataFrame(items[1])
-        if limit == 0:
+        if limit == 100:
             break
         if('emoticon_id' in data and 'text' in data):
             validText = data[(data['text'] != ' ') & data['text'].notnull()]
@@ -79,11 +69,31 @@ def readData():
             value, count = Counter(emoteToBestEmotion[emote].values()).most_common(1)[0]
             emoteToBestEmotion[emote][None] = value
 
+    # f = open("emotemapping.pkl","wb")
+    # pickle.dump(emoteToBestEmotion, f)
+    # f = open("emotemapping.pkl","rb")
+    # dd = pickle.load(f)
+    # print(dd)
+    print("\nBREAK\n")
+    print(emoteToBestEmotion)
+    return emoteToWordCount, emoteToBestEmotion
 
+def emoteCluster():
+    emoteToWordCount = {}
+    emoteToEmotionCount = {}
+    # for filename in os.listdir('ICWSM19_data'):
+    #     print(filename)
+    startTime = datetime.datetime.now()
+    filename = 'ninja.pkl'
+    path = 'ICWSM19_data/' + filename
+    unpickled = pd.read_pickle(path)
+    frags = unpickled['fragments']
+
+    model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
+    
+    emoteToWordCount, emoteToEmotionCount = clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount)
     print(emoteToWordCount)
     print("\nBREAK\n")
     print(emoteToEmotionCount)
-    print("\nBREAK\n")
-    print(emoteToBestEmotion)
-    print("Start: ", then)
+    print("Start: ", startTime)
     print("End: ", datetime.datetime.now())
