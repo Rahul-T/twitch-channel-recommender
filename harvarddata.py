@@ -7,7 +7,7 @@ from collections import Counter
 import os
 import pickle
 
-# We only want messages that contain both emotes and text
+# We only want messages with both emotes and text
 def checkEmoteAndText(data):
     if('emoticon_id' in data and 'text' in data):
         validText = data[(data['text'] != ' ') & data['text'].notnull()]
@@ -16,45 +16,33 @@ def checkEmoteAndText(data):
             return validText, validEmote
     return None, None
 
-def clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount):
-    limit = 0
+def mapEmoteWordsToMood(emote, emoteToWordCount, emoteToEmotionCount, cleanWords, mood):
+    # Add emote to overarching dicts if first occurence
+    if emote not in emoteToWordCount:
+        emoteToWordCount[emote] = {}
+        emoteToEmotionCount[emote] = {}
 
-    for items in frags.iteritems():
-        if limit == 100:
-            break
-        limit += 1
+    for word in cleanWords:
+        if word not in emoteToWordCount[emote]:
+            emoteToWordCount[emote][word] = 1
+            emoteToEmotionCount[emote][word] = {'Anger': 0, 'Disgust': 0, 'Fear': 0, 'Joy': 0, 'Sadness': 0, 'Surprise': 0}
+            emoteToEmotionCount[emote][word][mood] = 1
+        else:
+            emoteToWordCount[emote][word] = emoteToWordCount[emote][word] + 1
+            emoteToEmotionCount[emote][word][mood] = emoteToEmotionCount[emote][word][mood] + 1
 
-        # Items looks like: (30397, [{'emoticon_id': '822112'}, {'text': ' '}])
-        # First element is an id which we don't need
-        data = pd.DataFrame(items[1])
-        validText, validEmote = checkEmoteAndText(data)
-        if(validText is None and validEmote is None):
-            continue
+def analyzeText(validText, model):
+    rawWords = []
+    cleanWords = []
+    for row in validText.head().itertuples():
+        cleanWords.extend(removeNoise(row[2]))
+        rawWords.append(row[2])
 
-        emotesInMessage = set()
-        for row in validEmote.head().itertuples():
-            emoteId = int(row[1])
-            if(emoteId not in emotesInMessage and emoteId in idsToEmotes):
-                emote = idsToEmotes[emoteId]
-                emotesInMessage.add(emoteId)
-                if emote not in emoteToWordCount:
-                    emoteToWordCount[emote] = {}
-                    emoteToEmotionCount[emote] = {}
-                for row in validText.head().itertuples():
-                    words = removeNoise(row[2])
-                    strList = []
-                    strList.append(row[2])
-                    predictions = model.predict_classes(strList)
-                    mood = predictions.values[0][1]
-                    for word in words:
-                        if word not in emoteToWordCount[emote]:
-                            emoteToWordCount[emote][word] = 1
-                            emoteToEmotionCount[emote][word] = {'Anger': 0, 'Disgust': 0, 'Fear': 0, 'Joy': 0, 'Sadness': 0, 'Surprise': 0}
-                            emoteToEmotionCount[emote][word][mood] = 1
-                        else:
-                            emoteToWordCount[emote][word] = emoteToWordCount[emote][word] + 1
-                            emoteToEmotionCount[emote][word][mood] = emoteToEmotionCount[emote][word][mood] + 1
+    predictions = model.predict_classes([' '.join(rawWords)])
+    mood = predictions.values[0][1]
+    return cleanWords, mood
 
+def getTopWords(emoteToWordCount, emoteToEmotionCount):
     for emote in emoteToWordCount:
         srtd = sorted(emoteToWordCount[emote], key=emoteToWordCount[emote].get, reverse=True)
         emoteToWordCount[emote] = srtd[:10]
@@ -64,6 +52,7 @@ def clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount):
             if word not in emoteToWordCount[emote]:
                 del emoteToEmotionCount[emote][word]
 
+def mapEmoteToBestEmotions(emoteToEmotionCount):
     emoteToBestEmotion = {}
     for emote in emoteToEmotionCount:
         emoteToBestEmotion[emote] = {}
@@ -72,15 +61,47 @@ def clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount):
         if(emoteToBestEmotion[emote]):
             value, count = Counter(emoteToBestEmotion[emote].values()).most_common(1)[0]
             emoteToBestEmotion[emote][None] = value
+    return emoteToBestEmotion
 
-    # f = open("emotemapping.pkl","wb")
-    # pickle.dump(emoteToBestEmotion, f)
+
+def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
+    limit = 0
+
+    for items in frags.iteritems():
+        if limit == 1000:
+            break
+        # Items looks like: (30397, [{'emoticon_id': '822112'}, {'text': ' '}])
+        # First element is an id which we don't need
+        data = pd.DataFrame(items[1])
+        validText, validEmote = checkEmoteAndText(data)
+        if(validText is None and validEmote is None):
+            continue
+        
+        # limit += 1
+
+        emotesInMessage = set()
+        cleanWords, mood = analyzeText(validText, model)
+
+        for row in validEmote.head().itertuples():
+            emoteId = int(row[1])
+            # Skip if repeat emote or emoteId not found in database
+            if emoteId in emotesInMessage or emoteId not in idsToEmotes:
+                continue
+            emotesInMessage.add(emoteId)
+            mapEmoteWordsToMood(idsToEmotes[emoteId], emoteToWordCount, emoteToEmotionCount, cleanWords, mood)
+
+    getTopWords(emoteToWordCount, emoteToEmotionCount)
+    emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
+    
+
+    f = open("emotemapping.pkl","wb")
+    pickle.dump(emoteToBestEmotion, f)
     # f = open("emotemapping.pkl","rb")
     # dd = pickle.load(f)
     # print(dd)
-    print("\nBREAK\n")
+    # print("\nBREAK\n")
     print(emoteToBestEmotion)
-    return emoteToWordCount, emoteToBestEmotion
+    return emoteToWordCount, emoteToEmotionCount
 
 def emoteCluster():
     emoteToWordCount = {}
@@ -94,9 +115,9 @@ def emoteCluster():
     unpickled = pd.read_pickle(path)
     frags = unpickled['fragments']
     
-    emoteToWordCount, emoteToEmotionCount = clusterFile(frags, model, emoteToWordCount, emoteToEmotionCount)
-    print(emoteToWordCount)
-    print("\nBREAK\n")
-    print(emoteToEmotionCount)
+    emoteToWordCount, emoteToEmotionCount = clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model)
+    # print(emoteToWordCount)
+    # print("\nBREAK\n")
+    # print(emoteToEmotionCount)
     print("Start: ", startTime)
     print("End: ", datetime.datetime.now())
