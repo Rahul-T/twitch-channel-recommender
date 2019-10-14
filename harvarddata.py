@@ -90,34 +90,63 @@ def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
             emotesInMessage.add(emoteId)
             mapEmoteWordsToMood(idsToEmotes[emoteId], emoteToWordCount, emoteToEmotionCount, cleanWords, mood)
 
-    getTopWords(emoteToWordCount, emoteToEmotionCount)
-    emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
+    # getTopWords(emoteToWordCount, emoteToEmotionCount)
+    # emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
     
 
-    f = open("emotemapping.pkl","wb")
-    pickle.dump(emoteToBestEmotion, f)
+    # f = open("emotemapping.pkl","wb")
+    # pickle.dump(emoteToBestEmotion, f)
     # f = open("emotemapping.pkl","rb")
     # dd = pickle.load(f)
     # print(dd)
     # print("\nBREAK\n")
-    print(emoteToBestEmotion)
+    # print(emoteToBestEmotion)
     return emoteToWordCount, emoteToEmotionCount
 
 def emoteCluster():
+    # f1 = open("emoteToWordCount.pkl","rb")
+    # emoteToWordCount = pickle.load(f1)
+    # f1 = open("emoteToEmotionCount.pkl","rb")
+    # emoteToEmotionCount = pickle.load(f1)
+
     emoteToWordCount = {}
     emoteToEmotionCount = {}
+
     model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
-    # for filename in os.listdir('ICWSM19_data'):
-    #     print(filename)
-    startTime = datetime.datetime.now()
-    filename = 'ninja.pkl'
-    path = 'ICWSM19_data/' + filename
-    unpickled = pd.read_pickle(path)
-    frags = unpickled['fragments']
     
-    emoteToWordCount, emoteToEmotionCount = clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model)
+    startTime = datetime.datetime.now()
+    for filename in os.listdir('ICWSM19_data'):
+        print(filename)
+    
+        path = 'ICWSM19_data/' + filename
+        unpickled = pd.read_pickle(path)
+        frags = unpickled['fragments']
+
+        emoteToWordCount, emoteToEmotionCount = clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model)
+
+        print("Writing out dicts")
+        with open("emoteToWordCount.pkl","wb") as f1:
+            pickle.dump(emoteToWordCount, f1)
+        with open("emoteToEmotionCount.pkl","wb") as f2:
+            pickle.dump(emoteToEmotionCount, f2)
+        print("Wrote out dicts")
+
+        print("Reading in dicts")
+        with open("emoteToWordCount.pkl","rb") as f3:
+            emoteToWordCount = pickle.load(f3)
+        with open("emoteToEmotionCount.pkl","rb") as f4:
+            emoteToEmotionCount = pickle.load(f4)
+        print("Read in dicts")
+
     # print(emoteToWordCount)
     # print("\nBREAK\n")
     # print(emoteToEmotionCount)
+    getTopWords(emoteToWordCount, emoteToEmotionCount)
+    emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
+    with open("emoteToBestEmotion.pkl","wb") as f5:
+        pickle.dump(emoteToBestEmotion, f5)
+    print("\nBREAK\n")
+    print(emoteToBestEmotion)
+
     print("Start: ", startTime)
     print("End: ", datetime.datetime.now())

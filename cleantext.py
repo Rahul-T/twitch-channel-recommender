@@ -12,7 +12,7 @@ from nltk.stem import LancasterStemmer, WordNetLemmatizer
 
 def lemmatize_verbs(words):
     """Lemmatize verbs in list of tokenized words"""
-    bannedWords = {"ninja", "get", "http"}
+    bannedWords = {"http"}
     lemmatizer = WordNetLemmatizer()
     lemmas = []
     for word in words:
