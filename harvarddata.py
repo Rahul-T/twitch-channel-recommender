@@ -109,9 +109,11 @@ def emoteCluster():
     # f1 = open("emoteToEmotionCount.pkl","rb")
     # emoteToEmotionCount = pickle.load(f1)
 
-    emoteToWordCount = {}
-    emoteToEmotionCount = {}
-
+    with open("emoteToWordCount.pkl","rb") as f3:
+        emoteToWordCount = pickle.load(f3)
+    with open("emoteToEmotionCount.pkl","rb") as f4:
+        emoteToEmotionCount = pickle.load(f4)
+    
     model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
     
     startTime = datetime.datetime.now()
@@ -132,10 +134,10 @@ def emoteCluster():
         print("Wrote out dicts")
 
         print("Reading in dicts")
-        with open("emoteToWordCount.pkl","rb") as f3:
-            emoteToWordCount = pickle.load(f3)
-        with open("emoteToEmotionCount.pkl","rb") as f4:
-            emoteToEmotionCount = pickle.load(f4)
+        with open("emoteToWordCount.pkl","rb") as f5:
+            emoteToWordCount = pickle.load(f5)
+        with open("emoteToEmotionCount.pkl","rb") as f6:
+            emoteToEmotionCount = pickle.load(f6)
         print("Read in dicts")
 
     # print(emoteToWordCount)
