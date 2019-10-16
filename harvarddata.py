@@ -113,13 +113,14 @@ def emoteCluster():
         emoteToWordCount = pickle.load(f3)
     with open("emoteToEmotionCount.pkl","rb") as f4:
         emoteToEmotionCount = pickle.load(f4)
-    
+
     model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
     
     startTime = datetime.datetime.now()
     for filename in os.listdir('ICWSM19_data'):
+        if filename == '.DS_Store':
+            continue
         print(filename)
-    
         path = 'ICWSM19_data/' + filename
         unpickled = pd.read_pickle(path)
         frags = unpickled['fragments']
