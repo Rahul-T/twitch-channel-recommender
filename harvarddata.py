@@ -90,25 +90,9 @@ def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
             emotesInMessage.add(emoteId)
             mapEmoteWordsToMood(idsToEmotes[emoteId], emoteToWordCount, emoteToEmotionCount, cleanWords, mood)
 
-    # getTopWords(emoteToWordCount, emoteToEmotionCount)
-    # emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
-    
-
-    # f = open("emotemapping.pkl","wb")
-    # pickle.dump(emoteToBestEmotion, f)
-    # f = open("emotemapping.pkl","rb")
-    # dd = pickle.load(f)
-    # print(dd)
-    # print("\nBREAK\n")
-    # print(emoteToBestEmotion)
     return emoteToWordCount, emoteToEmotionCount
 
 def emoteCluster():
-    # f1 = open("emoteToWordCount.pkl","rb")
-    # emoteToWordCount = pickle.load(f1)
-    # f1 = open("emoteToEmotionCount.pkl","rb")
-    # emoteToEmotionCount = pickle.load(f1)
-
     with open("emoteToWordCount.pkl","rb") as f3:
         emoteToWordCount = pickle.load(f3)
     with open("emoteToEmotionCount.pkl","rb") as f4:
@@ -141,14 +125,11 @@ def emoteCluster():
             emoteToEmotionCount = pickle.load(f6)
         print("Read in dicts")
 
-    # print(emoteToWordCount)
-    # print("\nBREAK\n")
-    # print(emoteToEmotionCount)
     getTopWords(emoteToWordCount, emoteToEmotionCount)
     emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
     with open("emoteToBestEmotion.pkl","wb") as f5:
         pickle.dump(emoteToBestEmotion, f5)
-    print("\nBREAK\n")
+
     print(emoteToBestEmotion)
 
     print("Start: ", startTime)

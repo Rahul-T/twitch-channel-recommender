@@ -4,6 +4,7 @@ import os
 from cleantext import *
 from harvarddata import *
 from emotedict import *
+from machinelearning import *
 
 server = 'irc.chat.twitch.tv'
 port = 6667
@@ -29,8 +30,12 @@ def getLiveData(ed):
                 if word in ed:
                     print(ed[word])
 
+# with open("emoteToBestEmotion.pkl","rb") as f:
+#     emoteToBestEmotion = pickle.load(f)
+# print(emoteToBestEmotion)
 
-emoteCluster()
+# trainModel()
+# emoteCluster()
 # emotesToIds, idsToEmotes = buildEmoteDicts()
 # print(emotesToIds.get('Kappa'))
 # print(idsToEmotes.get(1))

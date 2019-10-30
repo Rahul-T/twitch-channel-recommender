@@ -4,3 +4,8 @@ ICWSM19_data/
 completed/
 incomplete/
 .vscode/
+*.wv
+*.pkl
+twitter_emotion_recognition/
+*.bin
+*.npy
