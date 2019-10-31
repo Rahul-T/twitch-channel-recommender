@@ -5,6 +5,7 @@ from sklearn import svm
 from gensim.models import Word2Vec
 import gensim 
 import datetime
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 def formatDataset():
     with open("emoteToBestEmotion.pkl","rb") as f:
@@ -49,12 +50,30 @@ def testModel():
     with open("pairsToEmotionsModel.pkl", 'rb') as pickle_file:
         mlmodel = pickle.load(pickle_file)
         model = Word2Vec.load('twitch_corpus.wv')
-        emoteVec = model['cmonbruh']
-        wordVec = model['fuck']
+        emoteVec = model['monkas']
+        wordVec = model['chat']
         res = mlmodel.predict([emoteVec + wordVec])
         print(res)
 
-testModel()
+def tfidf():
+    vectorizer = TfidfVectorizer(strip_accents='ascii', stop_words='english')
+    with open("chat_logs_processed.txt", 'r') as f:
+        content = f.readlines()
+        vectorizer.fit_transform(content)
+    pickle.dump(vectorizer, open("vectorizer.pkl", 'wb+'))
+    print(vectorizer.get_feature_names())
+
+# startTime = datetime.datetime.now()
+# tfidf()
+def createWeightsDict():
+    vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
+    idf = vectorizer.idf_
+    weights = dict(zip(vectorizer.get_feature_names(), idf))
+    pickle.dump(weights, open("tfidfWeights.pkl", "wb+"))
+
+weights = pickle.load(open("tfidfWeights.pkl", "rb"))
+# print(sorted(weights.items(), key=lambda x: x[1]))
+# print(weights['is'])
 
 def testCode():
     #trainModel()

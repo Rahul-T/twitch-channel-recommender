@@ -9,3 +9,4 @@ incomplete/
 twitter_emotion_recognition/
 *.bin
 *.npy
+*.txt
