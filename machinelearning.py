@@ -71,9 +71,16 @@ def createWeightsDict():
     weights = dict(zip(vectorizer.get_feature_names(), idf))
     pickle.dump(weights, open("tfidfWeights.pkl", "wb+"))
 
-weights = pickle.load(open("tfidfWeights.pkl", "rb"))
+# weights = pickle.load(open("tfidfWeights.pkl", "rb"))
+# testmsg = "LUL that was great"
+# for word in testmsg.split():
+#     try:
+#         print(word, " ", weights[word])
+#     except:
+#         continue
+
+
 # print(sorted(weights.items(), key=lambda x: x[1]))
-# print(weights['is'])
 
 def testCode():
     #trainModel()

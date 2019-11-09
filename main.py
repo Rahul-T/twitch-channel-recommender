@@ -10,7 +10,7 @@ server = 'irc.chat.twitch.tv'
 port = 6667
 nickname = os.environ['TWITCH_USERNAME']
 token = os.environ['OAUTH']
-channel = '#nickmercs'
+channel = '#cyn1c'
 
 sock = socket.socket()
 sock.connect((server, port))
