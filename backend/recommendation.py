@@ -70,9 +70,9 @@ def analyzeStreams(game, gamesToIds):
     print(channelEmotions)
     return channelEmotions
 
-def getRecommendation(emotion, game):
-    gamesToIds = mapGamesToIds()
-    channelEmotions = analyzeStreams(game, gamesToIds)
+def getRecommendation(emotion, topGames, game):
+    print("TOP GAMES: ", topGames)
+    channelEmotions = analyzeStreams(game, topGames)
     bestStream = max(channelEmotions, key=lambda channel: channelEmotions[channel][emotion])
     print(bestStream[1:])
     return bestStream[1:]
