@@ -16,7 +16,7 @@ client = TwitchHelix(client_id=os.environ['CLIENT_ID'])
 def mapGamesToIds():
     gamesToIds = {}
     games_iterator = client.get_top_games(page_size=3)
-    for game in islice(games_iterator, 0, 5):
+    for game in islice(games_iterator, 0, 24):
         gamesToIds[game['name']] = game['id']
     print(gamesToIds)
     return gamesToIds

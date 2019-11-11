@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from recommendation import mapGamesToIds, getRecommendation
+import json
 
 app = Flask(__name__)
 
@@ -9,7 +10,7 @@ topGames = None
 def games():
     global topGames
     topGames = mapGamesToIds()
-    resp = jsonify(list(topGames.keys()))
+    resp = json.dumps(list(topGames.keys()))
     return resp
 
 @app.route('/recommendation', methods=['GET'])
