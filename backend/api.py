@@ -17,6 +17,10 @@ def games():
 def recommendation():
     emotion = request.args.get('emotion')
     game = request.args.get('game')
+    print(emotion)
+    print(game)
+    if game == "Any Game!":
+        game = None
     resp = jsonify(getRecommendation(emotion, topGames, game))
     return resp
 

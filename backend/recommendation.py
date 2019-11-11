@@ -45,7 +45,7 @@ def getChannelEmotions(channel):
     sock.send("JOIN {}\n".format(channel).encode('utf-8'))
 
     currentEmotions = {'Anger': 0, 'Disgust': 0, 'Fear': 0, 'Joy': 0, 'Sadness': 0, 'Surprise': 0}
-    for x in range(100):
+    for x in range(50):
         resp = sock.recv(2048).decode('utf-8')
         message = re.search(':(.*)', resp[1:])
         if not message is None:
