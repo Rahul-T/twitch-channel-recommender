@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Home from './components/Home.js'
-import Recommendation from './components/Recommendation'
 
 function App() {
   return (
@@ -10,7 +9,6 @@ function App() {
       <div className="App">
           <Switch>
             <Route exact path='/' component={Home}/>
-            <Route path='/recommendation' component={Recommendation} />
           </Switch>
       </div>
     </BrowserRouter>
