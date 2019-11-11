@@ -4,8 +4,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
@@ -30,7 +28,7 @@ class Home extends Component {
             done: undefined,
             games: null,
             selectedGame: "Any Game!",
-            selectedEmotion: null
+            selectedEmotion: "Joy"
         };
     }
 
