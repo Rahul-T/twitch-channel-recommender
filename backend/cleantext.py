@@ -6,9 +6,14 @@ from bs4 import BeautifulSoup
 from nltk import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import LancasterStemmer, WordNetLemmatizer
+
+# Uncomment below lines on first time running to install necessary dependencies
+
 # nltk.download('punkt')
 # nltk.download('stopwords')
 # nltk.download('wordnet')
+
+# Follows text cleaning tutorial found here: https://www.kdnuggets.com/2018/03/text-data-preprocessing-walkthrough-python.html
 
 def lemmatize_verbs(words):
     """Lemmatize verbs in list of tokenized words"""

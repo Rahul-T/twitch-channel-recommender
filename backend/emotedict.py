@@ -1,6 +1,8 @@
 import json
 import pickle
 
+# Builds dictionaries mapping emotes to their emote ID's
+# emotes.json retrieved from https://twitchemotes.com/apidocs
 def buildEmoteDicts():
     emotesToIds = {}
     idsToEmotes = {}

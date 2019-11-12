@@ -1,6 +1,7 @@
 import pickle
 
 
+# Converts emote dict to lowercase
 with open("models/emoteToBestEmotion.pkl","rb") as f:
     emoteToBestEmotion = pickle.load(f)
     emotelowers = {}
@@ -11,7 +12,7 @@ with open("models/emoteToBestEmotion.pkl","rb") as f:
         for word in emoteToBestEmotion[emote]:
             emotelowers[emotelowercase][word] = emoteToBestEmotion[emote][word]
 
-    # Manual overrides
+    # Manual overrides to improve accuracy and include some BTTV emotes
     emotelowers['notlikethis'][None] = 'Sadness'
     emotelowers['lul'][None] = 'Joy'
     emotelowers['cmonbruh'][None] = 'Anger'

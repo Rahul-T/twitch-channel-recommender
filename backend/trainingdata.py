@@ -16,6 +16,7 @@ def checkEmoteAndText(data):
             return validText, validEmote
     return None, None
 
+# Builds nested dict mapping emote-word pairs to mood
 def mapEmoteWordsToMood(emote, emoteToWordCount, emoteToEmotionCount, cleanWords, mood):
     # Add emote to overarching dicts if first occurence
     if emote not in emoteToWordCount:
@@ -31,6 +32,8 @@ def mapEmoteWordsToMood(emote, emoteToWordCount, emoteToEmotionCount, cleanWords
             emoteToWordCount[emote][word] = emoteToWordCount[emote][word] + 1
             emoteToEmotionCount[emote][word][mood] = emoteToEmotionCount[emote][word][mood] + 1
 
+# Uses sentiment analyzer to get mood of all words in context
+# https://github.com/nikicc/twitter-emotion-recognition
 def analyzeText(validText, model):
     rawWords = []
     cleanWords = []
@@ -42,6 +45,7 @@ def analyzeText(validText, model):
     mood = predictions.values[0][1]
     return cleanWords, mood
 
+# Gets 10 most common words associated with emote to build final mapping
 def getTopWords(emoteToWordCount, emoteToEmotionCount):
     for emote in emoteToWordCount:
         srtd = sorted(emoteToWordCount[emote], key=emoteToWordCount[emote].get, reverse=True)
@@ -52,6 +56,8 @@ def getTopWords(emoteToWordCount, emoteToEmotionCount):
             if word not in emoteToWordCount[emote]:
                 del emoteToEmotionCount[emote][word]
 
+# Maps emote-word pair to most common emotion and sets default 'None' value to
+# most common emotion associated with emote
 def mapEmoteToBestEmotions(emoteToEmotionCount):
     emoteToBestEmotion = {}
     for emote in emoteToEmotionCount:
@@ -63,25 +69,22 @@ def mapEmoteToBestEmotions(emoteToEmotionCount):
             emoteToBestEmotion[emote][None] = value
     return emoteToBestEmotion
 
-
+# Iterates over lines of individual file to build out emote mappings
 def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
-    limit = 0
-
     for items in frags.iteritems():
-        if limit == 1000:
-            break
         # Items looks like: (30397, [{'emoticon_id': '822112'}, {'text': ' '}])
         # First element is an id which we don't need
         data = pd.DataFrame(items[1])
         validText, validEmote = checkEmoteAndText(data)
+
+        # We can only use messages with both emotes and text
         if(validText is None and validEmote is None):
             continue
         
-        # limit += 1
-
         emotesInMessage = set()
         cleanWords, mood = analyzeText(validText, model)
 
+        # Iterate over emotes and map word/mood accordingly
         for row in validEmote.head().itertuples():
             emoteId = int(row[1])
             # Skip if repeat emote or emoteId not found in database
@@ -92,6 +95,8 @@ def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
 
     return emoteToWordCount, emoteToEmotionCount
 
+# Iterates over all files in dataset found at
+# https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VE0IVQ
 def emoteCluster():
     with open("models/emoteToWordCount.pkl","rb+") as f3:
         emoteToWordCount = pickle.load(f3)

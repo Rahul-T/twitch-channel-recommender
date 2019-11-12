@@ -7,6 +7,7 @@ import gensim
 import datetime
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+# Formats dataset from static map to train ml model
 def formatDataset():
     with open("models/emoteToBestEmotion.pkl","rb") as f:
         emoteToBestEmotion = pickle.load(f)
@@ -35,14 +36,8 @@ def trainModel():
     clf.fit(x,y)
     pickle.dump(clf, open("models/pairsToEmotionsModel.pkl", 'wb+'))
 
-def testModel():
-    with open("models/pairsToEmotionsModel.pkl", 'rb') as pickle_file:
-        mlmodel = pickle.load(pickle_file)
-        model = Word2Vec.load('models/twitch_corpus.wv')
-        emoteVec = model['monkas']
-        wordVec = model['chat']
-        res = mlmodel.predict([emoteVec + wordVec])
-
+# tfidf gets frequencies of words and is used because the less frequent a word
+# is, the more important it is to the meaning of the sentence
 def tfidf():
     vectorizer = TfidfVectorizer(strip_accents='ascii', stop_words='english')
     with open("models/chat_logs_processed.txt", 'r') as f:

@@ -8,6 +8,7 @@ from twitch import TwitchHelix
 from itertools import islice
 from messageanalysis import analyzeMessage
 
+# Variables retrieved from env.sh
 server = 'irc.chat.twitch.tv'
 port = 6667
 nickname = os.environ['TWITCH_USERNAME']
@@ -22,6 +23,7 @@ def mapGamesToIds():
     print(gamesToIds)
     return gamesToIds
 
+# Gets top 5 streams that are English and from (optional) specified game
 def filterStreams(gameId):
     channels = []
     streams_iterator = client.get_streams()
@@ -38,6 +40,7 @@ def filterStreams(gameId):
     print(channels)
     return channels
 
+# Gets 50 live messages from channel
 def getLiveMessages(channel):
     sock = socket.socket()
     sock.connect((server, port))
@@ -75,9 +78,9 @@ def analyzeStreams(game, gamesToIds):
         game = gamesToIds[game]
 
     channels = filterStreams(game)
-
     channelMessages = {}
 
+    # Uses multithreading to get live messages from all 5 channels simultaneously
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         allMessages = executor.map(getLiveMessages, channels)
         channelIndex = 0
