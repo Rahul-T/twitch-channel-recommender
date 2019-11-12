@@ -45,3 +45,15 @@ To run the frontend, execute the following commands:
 cd frontend
 npm run start
 ```
+
+## Credits
+
+This application uses the following open source code:
+
+Stream Twitch Chat: https://learndatasci.com/tutorials/how-stream-text-data-twitch-sockets-python/
+
+Text Cleaning: https://www.kdnuggets.com/2018/03/text-data-preprocessing-walkthrough-python.html
+
+Sentiment Analyzer: https://github.com/nikicc/twitter-emotion-recognition
+
+Twitch Word2Vec: https://github.com/evanslt/BlogCode/tree/master/NLP
