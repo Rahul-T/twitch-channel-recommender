@@ -13,7 +13,7 @@ cd backend
 pip install -r requirements.txt
 ```
 
-Uncomment the following lines in `cleantext.py`
+Uncomment the following lines in `backend/cleantext.py`
 ```
 nltk.download('punkt')
 nltk.download('stopwords')
