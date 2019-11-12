@@ -11,6 +11,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 def formatDataset():
     with open("models/emoteToBestEmotion.pkl","rb") as f:
         emoteToBestEmotion = pickle.load(f)
+
+    # Code for training word2vec found here
+    # https://github.com/evanslt/BlogCode/tree/master/NLP
     model = Word2Vec.load('models/twitch_corpus.wv')
     data = []
     targets = []
