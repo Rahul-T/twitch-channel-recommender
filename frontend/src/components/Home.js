@@ -58,9 +58,6 @@ class Home extends Component {
 
     getRecommendation = (e) => {
         e.preventDefault()
-        console.log("Form submitted")
-        console.log(this.state.selectedGame)
-        console.log(this.state.selectedEmotion)
         this.setState({gettingRecommendation: true})
         setTimeout(() => {
             fetch(`http://127.0.0.1:5000/recommendation?emotion=${this.state.selectedEmotion}&game=${this.state.selectedGame}`)

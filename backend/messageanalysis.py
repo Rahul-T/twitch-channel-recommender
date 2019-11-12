@@ -13,12 +13,12 @@ emoteToBestEmotion = pickle.load(open("models/emoteToBestEmotionFixed.pkl","rb")
 bannedEmotes = {"here", "kill", "drop", "drops", "yeah", "does"}
 
 def analyzeMessage(message):
+    print("Message:", message)
     message = message.lower().split()
     result = getMostCommonEmote(message)
 
     # No emotes in message
     if result is None:
-        print("- No emote")
         return None
 
     emote, message = result
@@ -26,7 +26,6 @@ def analyzeMessage(message):
     
     # No recognizable words in message
     if word is None:
-        print("- No word")
         # Checks static map of emotes as backup for emote-only message
         # e.g. [LUL, None] mapping
         if emote in emoteToBestEmotion:

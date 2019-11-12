@@ -55,9 +55,8 @@ def getLiveMessages(channel):
         message = re.search(':(.*)', resp[1:])
         if not message is None:
             msg = message.group(0)[1:-1]
-            print("Message: ", msg, "Channel: ", channel)
+            print("Message:", msg, "| Channel:", channel)
             messages.append(msg)
-    print("channel:", channel, "messages:", messages)
 
     return messages
 
@@ -70,7 +69,6 @@ def getChannelEmotions(channelMessages):
         if emotion is not None:
             currentEmotions[emotion] += 1
     
-    print(currentEmotions)
     return currentEmotions
     
 def analyzeStreams(game, gamesToIds):
@@ -92,13 +90,13 @@ def analyzeStreams(game, gamesToIds):
     for channel in channelMessages:
         channelEmotions[channel] = getChannelEmotions(channelMessages[channel])
 
-    print(channelEmotions)
+    print("All channel emotions:", channelEmotions)
     return channelEmotions
 
 def getRecommendation(emotion, topGames, game):
-    print("TOP GAMES: ", topGames)
+    print("TOP GAMES:", topGames)
     channelEmotions = analyzeStreams(game, topGames)
     bestStream = max(channelEmotions, key=lambda channel: channelEmotions[channel][emotion])
-    print(bestStream[1:])
+    print("Best stream:", bestStream[1:])
     return bestStream[1:]
     
