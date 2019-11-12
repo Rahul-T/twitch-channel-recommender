@@ -93,9 +93,9 @@ def clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model):
     return emoteToWordCount, emoteToEmotionCount
 
 def emoteCluster():
-    with open("emoteToWordCount.pkl","rb") as f3:
+    with open("models/emoteToWordCount.pkl","rb+") as f3:
         emoteToWordCount = pickle.load(f3)
-    with open("emoteToEmotionCount.pkl","rb") as f4:
+    with open("models/emoteToEmotionCount.pkl","rb+") as f4:
         emoteToEmotionCount = pickle.load(f4)
 
     model = twitter.EmotionPredictor(classification='ekman', setting='mc', use_unison_model=True)
@@ -112,22 +112,22 @@ def emoteCluster():
         emoteToWordCount, emoteToEmotionCount = clusterFile(frags, emoteToWordCount, emoteToEmotionCount, model)
 
         print("Writing out dicts")
-        with open("emoteToWordCount.pkl","wb") as f1:
+        with open("models/emoteToWordCount.pkl","wb") as f1:
             pickle.dump(emoteToWordCount, f1)
-        with open("emoteToEmotionCount.pkl","wb") as f2:
+        with open("models/emoteToEmotionCount.pkl","wb") as f2:
             pickle.dump(emoteToEmotionCount, f2)
         print("Wrote out dicts")
 
         print("Reading in dicts")
-        with open("emoteToWordCount.pkl","rb") as f5:
+        with open("models/emoteToWordCount.pkl","rb") as f5:
             emoteToWordCount = pickle.load(f5)
-        with open("emoteToEmotionCount.pkl","rb") as f6:
+        with open("models/emoteToEmotionCount.pkl","rb") as f6:
             emoteToEmotionCount = pickle.load(f6)
         print("Read in dicts")
 
     getTopWords(emoteToWordCount, emoteToEmotionCount)
     emoteToBestEmotion = mapEmoteToBestEmotions(emoteToEmotionCount)
-    with open("emoteToBestEmotion.pkl","wb") as f5:
+    with open("models/emoteToBestEmotion.pkl","wb") as f5:
         pickle.dump(emoteToBestEmotion, f5)
 
     print(emoteToBestEmotion)

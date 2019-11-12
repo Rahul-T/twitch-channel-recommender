@@ -11,3 +11,4 @@ twitter_emotion_recognition/
 *.npy
 *.txt
 venv/
+models/

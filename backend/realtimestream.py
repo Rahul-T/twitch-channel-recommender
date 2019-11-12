@@ -45,7 +45,6 @@ def getLiveMessages(channel):
     sock.send("NICK {}\n".format(nickname).encode('utf-8'))
     sock.send("JOIN {}\n".format(channel).encode('utf-8'))
 
-    # currentEmotions = {'Anger': 0, 'Disgust': 0, 'Fear': 0, 'Joy': 0, 'Sadness': 0, 'Surprise': 0}
     messages = []
 
     for x in range(50):
@@ -55,13 +54,8 @@ def getLiveMessages(channel):
             msg = message.group(0)[1:-1]
             print("Message: ", msg, "Channel: ", channel)
             messages.append(msg)
-            # emotion = analyzeMessage(msg)
-            # emotion = None
-            # if emotion is not None:
-            #     currentEmotions[emotion] += 1
     print("channel:", channel, "messages:", messages)
-    # print(messages)
-    # return currentEmotions
+
     return messages
 
 def getChannelEmotions(channelMessages):
@@ -84,12 +78,10 @@ def analyzeStreams(game, gamesToIds):
 
     channelMessages = {}
 
-    # channels = ['#summit1g', '#nickmercs']
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         allMessages = executor.map(getLiveMessages, channels)
         channelIndex = 0
         for channelMessage in allMessages:
-            # print("Channel: ", channels[channelIndex], "RESULTS:", i)
             channelMessages[channels[channelIndex]] = channelMessage
             channelIndex += 1
 
@@ -106,9 +98,4 @@ def getRecommendation(emotion, topGames, game):
     bestStream = max(channelEmotions, key=lambda channel: channelEmotions[channel][emotion])
     print(bestStream[1:])
     return bestStream[1:]
-
-# analyzeStreams()
-# getLiveData()
-# filterStreams()
-# mapGamesToIds()
-# getRecommendation()
+    

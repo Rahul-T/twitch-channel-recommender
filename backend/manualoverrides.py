@@ -1,7 +1,7 @@
 import pickle
 
 
-with open("emoteToBestEmotion.pkl","rb") as f:
+with open("models/emoteToBestEmotion.pkl","rb") as f:
     emoteToBestEmotion = pickle.load(f)
     emotelowers = {}
 
@@ -28,5 +28,5 @@ with open("emoteToBestEmotion.pkl","rb") as f:
     emotelowers['pepehands'] = {}
     emotelowers['pepehands'][None] = 'Sadness'
 
-    with open("emoteToBestEmotionFixed.pkl","wb+") as f:
+    with open("models/emoteToBestEmotionFixed.pkl","wb+") as f:
         pickle.dump(emotelowers, f)

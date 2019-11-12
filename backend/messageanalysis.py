@@ -3,19 +3,13 @@ from gensim.models import Word2Vec
 from cleantext import removeNoise, lemmatize_verbs
 import json
 
-tfidfWeights = pickle.load(open("tfidfWeights.pkl", "rb"))
-mlmodel = pickle.load(open("pairsToEmotionsModel.pkl", 'rb'))
-word2Vec = Word2Vec.load('twitch_corpus.wv')
-emotesToIds = pickle.load(open("emotesToIds.pkl", 'rb'))
-emoteToBestEmotion = pickle.load(open("emoteToBestEmotionFixed.pkl","rb"))
+tfidfWeights = pickle.load(open("models/tfidfWeights.pkl", "rb"))
+mlmodel = pickle.load(open("models/pairsToEmotionsModel.pkl", 'rb'))
+word2Vec = Word2Vec.load('models/twitch_corpus.wv')
+emotesToIds = pickle.load(open("models/emotesToIds.pkl", 'rb'))
+emoteToBestEmotion = pickle.load(open("models/emoteToBestEmotionFixed.pkl","rb"))
 
 bannedEmotes = {"here", "kill", "drop", "drops", "yeah", "does"}
-
-# data = json.load(open('emotes.json'))
-# print(data)
-
-# print(emotesToIds)
-# print(tfidfWeights['kill'])
 
 def analyzeMessage(message):
     message = message.lower().split()
@@ -84,10 +78,3 @@ def getMostImportantWord(message):
         return None
     
     return max(importance, key=importance.get)
-
-# testmsg = "LUL LUL Kappa Kappa Kappa LUL that was cmonBruh great sucks awesome lmao"
-# testmsg2 = "that was great"
-# testmsg3 = "Why do so many of them have alpha boost?"
-# testmsg4 = "Pog"
-# analyzeMessage(testmsg4)
-# print(emoteToBestEmotion["biblethump"])
