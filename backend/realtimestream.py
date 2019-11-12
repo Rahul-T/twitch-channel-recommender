@@ -6,7 +6,7 @@ import re
 import requests
 from twitch import TwitchHelix
 from itertools import islice
-from realtimeanalysis import analyzeMessage
+from messageanalysis import analyzeMessage
 
 server = 'irc.chat.twitch.tv'
 port = 6667

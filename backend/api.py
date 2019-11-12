@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from recommendation import mapGamesToIds, getRecommendation
+from realtimestream import mapGamesToIds, getRecommendation
 import json
 
 app = Flask(__name__)

@@ -14,7 +14,7 @@ const classes = makeStyles(theme => ({
       flexWrap: 'wrap',
       justifyContent: 'space-around' , 
       overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.palette.background.paper
     },
     gridList: {
       width: 500,
@@ -50,14 +50,10 @@ class Home extends Component {
 
     gameSelected = (game) => {
         this.setState({ selectedGame: game })
-        console.log(this.state.selectedGame)
-        console.log(this.state.selectedEmotion)
     }
 
     emotionSelected = (emotion) => {
         this.setState({ selectedEmotion: emotion })
-        console.log(this.state.selectedGame)
-        console.log(this.state.selectedEmotion)
     }
 
     getRecommendation = (e) => {
@@ -100,7 +96,7 @@ class Home extends Component {
             return  <div>
                         <h4 style={{position: 'absolute', left: '50%', top: '40%',transform: 'translate(-50%, -50%)'}}>
                             We recommend <span style={{color: '#6441a5'}}>{this.state.recommendation}</span>! &nbsp;
-                            Channel link: <a href={url} target="_blank">{url}</a>
+                            Channel link: <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
                         </h4>
                         <Button variant="outlined" onClick={this.refreshPage}
                         style={{
