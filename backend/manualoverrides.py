@@ -1,6 +1,5 @@
 import pickle
 
-
 # Converts emote dict to lowercase
 with open("models/emoteToBestEmotion.pkl","rb") as f:
     emoteToBestEmotion = pickle.load(f)

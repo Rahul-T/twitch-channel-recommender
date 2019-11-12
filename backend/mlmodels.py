@@ -53,3 +53,4 @@ def createWeightsDict():
     idf = vectorizer.idf_
     weights = dict(zip(vectorizer.get_feature_names(), idf))
     pickle.dump(weights, open("models/tfidfWeights.pkl", "wb+"))
+    
