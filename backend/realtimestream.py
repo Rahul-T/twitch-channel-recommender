@@ -101,7 +101,4 @@ def getRecommendation(emotion, topGames, game):
     channelEmotions = analyzeStreams(game, topGames)
     bestStream = max(channelEmotions, key=lambda channel: channelEmotions[channel][emotion])
     print("Best stream:", bestStream)
-    # emotionMessages = channelEmotions[bestStream][emotion]
-    # totalMessages = sum(channelEmotions[bestStream].values())
-    # return {'stream': bestStream[1:], 'emotionMessages': emotionMessages, 'totalMessages': totalMessages}
     return {'stream': bestStream[1:], 'emotions': channelEmotions[bestStream]}
