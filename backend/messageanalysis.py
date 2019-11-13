@@ -51,7 +51,7 @@ def getMostCommonEmote(message):
     # If no emotes found, searches static map as a last chance
     if not emoteFreq:
         maxWord = max(wordFreq, key=wordFreq.get)
-        if maxWord in emoteToBestEmotion:
+        if maxWord in emoteToBestEmotion and maxWord in word2Vec:
             return maxWord, list(filter(lambda a: a != maxWord, message))
         return None
     
@@ -88,4 +88,3 @@ def getMostImportantWord(message):
         return None
     
     return max(importance, key=importance.get)
-    
