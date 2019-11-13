@@ -15,6 +15,9 @@ nickname = os.environ['TWITCH_USERNAME']
 token = os.environ['OAUTH']
 client = TwitchHelix(client_id=os.environ['CLIENT_ID'])
 
+numberOfStreams = 5
+messagesPerStream = 50
+
 def mapGamesToIds():
     gamesToIds = {}
     games_iterator = client.get_top_games(page_size=3)
@@ -34,7 +37,7 @@ def filterStreams(gameId):
             continue
         channels.append('#' + stream['user_name'].lower())
         streamCount += 1
-        if(streamCount == 5):
+        if(streamCount == numberOfStreams):
             break
 
     print(channels)
@@ -50,7 +53,7 @@ def getLiveMessages(channel):
 
     messages = []
 
-    for x in range(50):
+    for x in range(messagesPerStream):
         resp = sock.recv(2048).decode('utf-8')
         message = re.search(':(.*)', resp[1:])
         if not message is None:
@@ -97,6 +100,8 @@ def getRecommendation(emotion, topGames, game):
     print("TOP GAMES:", topGames)
     channelEmotions = analyzeStreams(game, topGames)
     bestStream = max(channelEmotions, key=lambda channel: channelEmotions[channel][emotion])
-    print("Best stream:", bestStream[1:])
-    return bestStream[1:]
-    
+    print("Best stream:", bestStream)
+    # emotionMessages = channelEmotions[bestStream][emotion]
+    # totalMessages = sum(channelEmotions[bestStream].values())
+    # return {'stream': bestStream[1:], 'emotionMessages': emotionMessages, 'totalMessages': totalMessages}
+    return {'stream': bestStream[1:], 'emotions': channelEmotions[bestStream]}
