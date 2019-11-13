@@ -20,6 +20,22 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 ```
 
+#### Backend Setup
+
+* Run `cd backend`
+* Build dictionaries mapping emotes to their emote ID's 
+    * Retrieve emotes.json from [Twitch Emotes](https://twitchemotes.com/apidocs)
+    * Run `buildEmoteDicts()` in `emotedict.py`
+* Get [Twitter Sentiment Analyzer](https://github.com/nikicc/twitter-emotion-recognition) code
+* Collect and format training data
+    * Retrieve Twitch messages from [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VE0IVQ)
+    * Run `emoteCluster()` in `trainingdata.py`
+* Follow instructions at [What does Kappa mean?](https://github.com/evanslt/BlogCode/tree/master/NLP) to train custom Twitch Word2Vec model
+* Train ML models (Word2Vec, my custom model, Tfidf)
+    * Run `trainModel()` in `mlmodels.py`
+    * Run `tfidf()` and `createWeightsDict()` in `mlmodels.py`
+* Run `python manualoverrides.py` (hand-written manual overrides to increase accuracy)
+
 #### Running Backend Server
 To run the backend server, execute the following commands:
 
