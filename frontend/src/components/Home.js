@@ -179,7 +179,7 @@ class Home extends Component {
                             <Text style={{fontWeight: 'bold', color: 'orange'}}>Fear</Text>
                         </ToggleButton>
                         <ToggleButton variant="text" value="Joy" selected={this.state.selectedEmotion === "Joy"} onClick={() => this.emotionSelected("Joy")}>
-                            <Text style={{fontWeight: 'bold', color: '#dbdb00'}}>Joy</Text>
+                            <Text style={{fontWeight: 'bold', color: '#b2b500'}}>Joy</Text>
                         </ToggleButton>
                         <ToggleButton variant="text" value="Sadness" selected={this.state.selectedEmotion === "Sadness"} onClick={() => this.emotionSelected("Sadness")}>
                             <Text style={{fontWeight: 'bold', color: 'blue'}}>Sadness</Text>
