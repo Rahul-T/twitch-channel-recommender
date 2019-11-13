@@ -21,8 +21,17 @@ nltk.download('wordnet')
 ```
 
 #### Backend Setup
-
 * Run `cd backend`
+* Setup environment variables 
+    * Get auth token from [Twitch Apps](https://twitchapps.com/tmi/)
+    * Get client ID by registering a new application at [Twitch Developers](https://dev.twitch.tv/console)
+    * Create file `env.sh` with the following contents:
+    ```
+    export TWITCH_USERNAME=YourTwitchUserName
+    export OAUTH=oauth:YourOauthToken
+    export CLIENT_ID=YourClientID
+    ```
+    * Run `source env.sh`
 * Build dictionaries mapping emotes to their emote ID's 
     * Retrieve emotes.json from [Twitch Emotes](https://twitchemotes.com/apidocs)
     * Run `buildEmoteDicts()` in `emotedict.py`
@@ -41,6 +50,7 @@ To run the backend server, execute the following commands:
 
 ```
 cd backend
+source env.sh
 python api.py
 ```
 
