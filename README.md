@@ -1,7 +1,7 @@
 # Twitch Channel Recommender
 Recommends Twitch channel to a user based on user set preferences and real-time chat data
 
-For an in-depth explanation of the project view this [presentation](./Presentation.pdf)
+For an in-depth explanation of the project, please view this [presentation](./Presentation.pdf)
 
 [Video demo of functionality](https://www.youtube.com/watch?v=R-YS_NFtGGw)
 
