@@ -1,6 +1,10 @@
 # Twitch Channel Recommender
 Recommends Twitch channel to a user based on user set preferences and real-time chat data
 
+For an in-depth explanation of the project view this [presentation](./Presentation.pdf)
+
+[Video demo of functionality](https://www.youtube.com/watch?v=R-YS_NFtGGw)
+
 *Note: To run code locally you may need to install the following Chrome extension related to Cross-Origin Resource Sharing: [Moesif CORS](https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc?hl=en-US)*
 
 ## Backend
