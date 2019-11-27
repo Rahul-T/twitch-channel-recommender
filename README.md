@@ -1,13 +1,24 @@
 # Twitch Channel Recommender
 Recommends Twitch channel to a user based on user set preferences and real-time chat data
 
-For an in-depth explanation of the project, please view this [presentation](./Presentation.pdf)
+For an in-depth explanation of the project, please view this [report](./FinalReport.pdf)
 
 [Video demo of functionality](https://www.youtube.com/watch?v=R-YS_NFtGGw)
 
 *Note: To run code locally you may need to install the following Chrome extension related to Cross-Origin Resource Sharing: [Moesif CORS](https://chrome.google.com/webstore/detail/moesif-orign-cors-changer/digfbfaphojjndkpccljibejjbppifbc?hl=en-US)*
 
 ## Backend
+
+#### Important Files
+
+* `api.py` - Provides endpoints for frontend of application to access most viewed games and channel recommendation
+* `cleantext.py` - Cleans message text (e.g. removing stopwords, puncuation, etc.)
+* `emotedict.py` - Maps emotes to IDs (this is necessary due to the format of the dataset that is used for training)
+* `manualoverrides.py` - Contains manual overrides to improve accuracy
+* `messageanalysis.py` - Extracts most common emote and word from message, passes pair into model, then returns resulting emotion
+* `mlmodels.py` - Formats dataset and trains SVM model (emote-word pairs to emotions), Word2Vec model (emotes, words to vectors), and TFIDF model (emotes, words to frequencies) 
+* `realtimestream.py` - Retrieves most viewed channels and real-time chat messages from Twitch API endpoints
+* `trainingdata.py` - Builds emote-word pair to emotion mappings
 
 #### Installing Backend Dependencies
 To install all backend dependencies , execute the following commands:
@@ -59,6 +70,10 @@ python api.py
 ```
 
 ## Frontend
+
+#### Important Files
+
+* `src/components/Home.js` - Main page where user inputs preferences and views returned recommendation  
 
 #### Installing Frontend Dependencies
 To install all frontend dependencies, execute the following commands:
